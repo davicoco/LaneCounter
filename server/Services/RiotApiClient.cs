@@ -4,21 +4,20 @@ namespace server.Services;
 
 public class RiotApiClient
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly HttpClient _httpClient;
     private readonly IConfiguration _configuration;
-    public RiotApiClient(IHttpClientFactory httpClientFactory,IConfiguration configuration)
+    public RiotApiClient(HttpClient httpClient,IConfiguration configuration)
     {
-        _httpClientFactory = httpClientFactory;
+        _httpClient = httpClient;
         _configuration = configuration;
     }
 
     public async Task<string> GetPuuidAsync(string gameName, string tagLine)
     {
-        var httpClient = _httpClientFactory.CreateClient();
         var url = $"https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}";
         var apiKey = _configuration["RIOT_API_KEY"];
-        httpClient.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
-        var response = await httpClient.GetAsync(url);
+        _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
+        var response = await _httpClient.GetAsync(url);
         string responseBody = await response.Content.ReadAsStringAsync();
         var account = JsonSerializer.Deserialize<AccountDto>(responseBody);
         if(account?.Puuid is null)
