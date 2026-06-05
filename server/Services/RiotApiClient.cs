@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 using server.Models;
 namespace server.Services;
@@ -23,5 +24,21 @@ public class RiotApiClient
         if(account?.Puuid is null)
         throw new Exception("No value for account-puuid was found");
         return account.Puuid;
+    }
+
+    public async Task<List<LeagueEntryDto>> GetLeagueEntriesAsync(string encryptedPUUID)
+    {
+        var url = $"https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/{encryptedPUUID}";
+        var apiKey = _configuration["RIOT_API_KEY"];
+        _httpClient.DefaultRequestHeaders.Add("X-Riot-Token",apiKey);
+        var response = await _httpClient.GetAsync(url);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var playerEntries = JsonSerializer.Deserialize<List<LeagueEntryDto>>(responseBody);
+        if(playerEntries is null)
+        {
+            return [];
+        }
+        return playerEntries;
+
     }
 }
