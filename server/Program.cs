@@ -5,7 +5,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddHttpClient<RiotApiClient>();
+var apiKey = builder.Configuration["RIOT_API_KEY"];
+builder.Services.AddHttpClient<RiotApiClient>(client =>
+{
+    client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
+});
 builder.Services.AddControllers();
 var app = builder.Build();
 

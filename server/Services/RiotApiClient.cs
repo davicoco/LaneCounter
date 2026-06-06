@@ -16,8 +16,6 @@ public class RiotApiClient
     public async Task<string> GetPuuidAsync(string gameName, string tagLine)
     {
         var url = $"https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}";
-        var apiKey = _configuration["RIOT_API_KEY"];
-        _httpClient.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
         var response = await _httpClient.GetAsync(url);
         string responseBody = await response.Content.ReadAsStringAsync();
         var account = JsonSerializer.Deserialize<AccountDto>(responseBody);
@@ -29,8 +27,6 @@ public class RiotApiClient
     public async Task<List<LeagueEntryDto>> GetLeagueEntriesAsync(string encryptedPUUID)
     {
         var url = $"https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/{encryptedPUUID}";
-        var apiKey = _configuration["RIOT_API_KEY"];
-        _httpClient.DefaultRequestHeaders.Add("X-Riot-Token",apiKey);
         var response = await _httpClient.GetAsync(url);
         var responseBody = await response.Content.ReadAsStringAsync();
         var playerEntries = JsonSerializer.Deserialize<List<LeagueEntryDto>>(responseBody);
