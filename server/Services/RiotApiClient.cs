@@ -13,14 +13,14 @@ public class RiotApiClient
         _configuration = configuration;
     }
 
-    public async Task<string> GetPuuidAsync(string gameName, string tagLine)
+    public async Task<string?> GetPuuidAsync(string gameName, string tagLine)
     {
         var url = $"https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}";
         var response = await _httpClient.GetAsync(url);
         string responseBody = await response.Content.ReadAsStringAsync();
         var account = JsonSerializer.Deserialize<AccountDto>(responseBody);
         if(account?.Puuid is null)
-        throw new Exception("No value for account-puuid was found");
+            return null;
         return account.Puuid;
     }
 

@@ -18,6 +18,10 @@ public class AccountController : ControllerBase
     public async Task<IActionResult> GetPuuidAsync(string gameName, string tagLine)
     {
         var puuid = await _riotApiClient.GetPuuidAsync(gameName,tagLine);
+        if(puuid is null)
+        {
+            return NotFound();
+        }
         return Ok(puuid);
     }
 }

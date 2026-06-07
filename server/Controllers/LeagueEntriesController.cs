@@ -18,6 +18,10 @@ public class LeagueEntriesController : ControllerBase
     public async Task<IActionResult> GetLeagueEntries(string gameName, string tagLine)
     {
         var puuid = await _riotApiClient.GetPuuidAsync(gameName,tagLine);
+        if(puuid is null)
+        {
+            return NotFound();
+        }
         var entries = await _riotApiClient.GetLeagueEntriesAsync(puuid);
         return Ok(entries);
     }
