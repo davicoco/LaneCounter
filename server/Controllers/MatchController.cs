@@ -25,4 +25,15 @@ public class MatchController : ControllerBase
         var matchIds = await _riotApiClient.GetMatchIdsAsync(puuid);
         return Ok(matchIds);
     }
+
+    [HttpGet("{matchId}")]
+    public async Task<IActionResult> GetMatchInfoAsync(string matchId)
+    {
+        var match = await _riotApiClient.GetMatchInfoAsync(matchId);
+        if(match is null)
+        {
+            return NotFound();
+        }
+        return Ok(match);
+    }
 }

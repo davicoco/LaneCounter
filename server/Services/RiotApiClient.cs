@@ -51,4 +51,13 @@ public class RiotApiClient
         }
         return playerMatches;
     }
+
+    public async Task<MatchDto?> GetMatchInfoAsync(string matchId)
+    {
+        var url = $"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}";
+        var response = await _httpClient.GetAsync(url);
+        var responseBody = await response.Content.ReadAsStringAsync();
+        var match = JsonSerializer.Deserialize<MatchDto>(responseBody);
+        return match;
+    }
 }
