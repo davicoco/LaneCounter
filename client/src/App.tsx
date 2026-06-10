@@ -1,8 +1,18 @@
 import { useState } from "react";
 import "./App.css";
 
+interface LeagueEntry {
+  queueType: string;
+  tier: string;
+  rank: string;
+  leaguePoints: number;
+  wins: number;
+  losses: number;
+}
+
 function App() {
   const [searchField, setSearchField] = useState("");
+  const [rankedData, setRankedData] = useState<LeagueEntry[]>([]);
 
   return (
     <>
@@ -19,10 +29,22 @@ function App() {
           );
           const data = await response.json();
           console.log(data);
+          setRankedData(data);
         }}
       >
         Sök
       </button>
+
+      {rankedData.length > 0 && (
+        <div>
+          <p>Queue: {rankedData[0].queueType}</p>
+          <p>Tier: {rankedData[0].tier}</p>
+          <p>Rank: {rankedData[0].rank}</p>
+          <p>LeaguePoints: {rankedData[0].leaguePoints}</p>
+          <p>Wins: {rankedData[0].wins}</p>
+          <p>Losses: {rankedData[0].losses}</p>
+        </div>
+      )}
     </>
   );
 }
