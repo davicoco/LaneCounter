@@ -13,6 +13,7 @@ interface LeagueEntry {
 function App() {
   const [searchField, setSearchField] = useState("");
   const [rankedData, setRankedData] = useState<LeagueEntry[]>([]);
+  const [uiErrorMessage, setUiErrorMessage] = useState ("");
 
   return (
     <>
@@ -30,13 +31,19 @@ function App() {
           const response = await fetch(
             `http://localhost:5134/api/leagueentries/${gameName}/${tagLine}`,
           );
+          if(!response.ok){
+            setUiErrorMessage("Failed to get data");
+            setRankedData([]);
+            return 
+          }
           const data = await response.json();
-          console.log(data);
+          setUiErrorMessage("");    
           setRankedData(data);
         }}
       >
         Sök
       </button>
+      {uiErrorMessage && <p>{uiErrorMessage}</p>}
 
       {rankedData.length > 0 && (
         <div>
