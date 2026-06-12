@@ -24,8 +24,11 @@ function App() {
       />
       <button
         onClick={async () => {
+          const parts = searchField.split("#")
+          const gameName = parts[0];
+          const tagLine = parts[1]
           const response = await fetch(
-            "http://localhost:5134/api/leagueentries/Coco%20Otravez/6156",
+            `http://localhost:5134/api/leagueentries/${gameName}/${tagLine}`,
           );
           const data = await response.json();
           console.log(data);
