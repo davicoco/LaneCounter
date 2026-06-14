@@ -14,4 +14,6 @@ public class ParticipantDto
     public int? Deaths { get; set; }
     [JsonPropertyName("assists")]
     public int? Assists { get; set; }
+    [JsonPropertyName("win")]
+    public bool? Win { get; set; }
 }

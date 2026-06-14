@@ -22,6 +22,6 @@ public class AccountController : ControllerBase
         {
             return NotFound();
         }
-        return Ok(puuid);
+        return Ok(new {puuid = puuid});
     }
 }
