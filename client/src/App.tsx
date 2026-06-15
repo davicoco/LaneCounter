@@ -107,12 +107,17 @@ function App() {
 
       {matches.length > 0 && (
         <div>
-          {matches.map((match: Match) => (
-            <div>
-              <p>Champion: {match.info.participants.find((p) => p.puuid === myPuuid)?.championName}</p>
-              <p>Kills: {match.info.participants.find((p) => p.puuid === myPuuid)?.kills}</p>
-            </div>
-          ))}
+          {matches.map((match: Match, index: number) => {
+            const searchedPlayer = match.info.participants.find((p) => p.puuid === myPuuid);
+            return (
+            <div key={index}>
+              <p>Champion: {searchedPlayer?.championName}</p>
+              <p>Kills: {searchedPlayer?.kills}</p>
+              <p>Deaths: {searchedPlayer?.deaths}</p>
+              <p>Assists: {searchedPlayer?.assists}</p>
+              <p>Win/loss: {searchedPlayer?.win ? "Win" : "Loss"}</p>
+            </div>)
+          })}
         </div>
       )}
     </>
