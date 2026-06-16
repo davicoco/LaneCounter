@@ -106,17 +106,20 @@ function App() {
       )}
 
       {matches.length > 0 && (
-        <div>
+        <div className="match-list">
           {matches.map((match: Match, index: number) => {
             const searchedPlayer = match.info.participants.find((p) => p.puuid === myPuuid);
             return (
-            <div key={index}>
-              <p>Champion: {searchedPlayer?.championName}</p>
-              <p>Kills: {searchedPlayer?.kills}</p>
-              <p>Deaths: {searchedPlayer?.deaths}</p>
-              <p>Assists: {searchedPlayer?.assists}</p>
-              <p>Win/loss: {searchedPlayer?.win ? "Win" : "Loss"}</p>
-            </div>)
+              <div
+                key={index}
+                className={searchedPlayer?.win ? "match-card win" : "match-card loss"}
+              >
+                <p>Champion: {searchedPlayer?.championName}</p>
+                <p>Kills: {searchedPlayer?.kills}</p>
+                <p>Deaths: {searchedPlayer?.deaths}</p>
+                <p>Assists: {searchedPlayer?.assists}</p>
+                <p>Win/loss: {searchedPlayer?.win ? "Win" : "Loss"}</p>
+              </div>)
           })}
         </div>
       )}

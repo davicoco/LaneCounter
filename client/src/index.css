@@ -130,3 +130,20 @@ button {
   border-radius: 4px;
   cursor: pointer;
 }
+
+.match-card {
+  background-color: #1a1f2e;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+}
+
+.win {
+  border-left: 4px solid #3b82f6;
+  border-right: 4px solid #3b82f6;
+}
+.loss{
+  border-left: 4px solid #e84057;
+  border-right: 4px solid #e84057;
+}
