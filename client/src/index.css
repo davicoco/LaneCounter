@@ -132,6 +132,8 @@ button {
 }
 
 .match-card {
+  display: flex;
+  justify-content: space-between;
   background-color: #1a1f2e;
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -146,4 +148,10 @@ button {
 .loss{
   border-left: 4px solid #e84057;
   border-right: 4px solid #e84057;
+}
+
+.stats {
+  display: flex;
+  gap: 12px;
+  align-items: center;
 }

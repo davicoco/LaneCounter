@@ -114,11 +114,15 @@ function App() {
                 key={index}
                 className={searchedPlayer?.win ? "match-card win" : "match-card loss"}
               >
-                <p>Champion: {searchedPlayer?.championName}</p>
-                <p>Kills: {searchedPlayer?.kills}</p>
-                <p>Deaths: {searchedPlayer?.deaths}</p>
-                <p>Assists: {searchedPlayer?.assists}</p>
-                <p>Win/loss: {searchedPlayer?.win ? "Win" : "Loss"}</p>
+                <div className="champion">
+                  <p>Champion: {searchedPlayer?.championName}</p>
+                </div>
+                <div className="stats">
+                  <p>Kills: {searchedPlayer?.kills}</p>
+                  <p>Deaths: {searchedPlayer?.deaths}</p>
+                  <p>Assists: {searchedPlayer?.assists}</p>
+                  <p>Win/loss: {searchedPlayer?.win ? "Win" : "Loss"}</p>
+                </div>
               </div>)
           })}
         </div>
