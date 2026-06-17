@@ -5,5 +5,5 @@ namespace server.Models;
 public class AccountDto
 {
     [JsonPropertyName("puuid")]
-    public string? Puuid { get; set; }
+    public required string Puuid { get; set; }
 }

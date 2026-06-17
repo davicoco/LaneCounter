@@ -5,5 +5,5 @@ namespace server.Models;
 public class MatchDto
 {
     [JsonPropertyName("info")]
-    public InfoDto? Info { get; set; }
+    public required InfoDto Info { get; set; }
 }

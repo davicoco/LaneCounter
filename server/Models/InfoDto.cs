@@ -5,13 +5,13 @@ namespace server.Models;
 public class InfoDto
 {
     [JsonPropertyName("gameMode")]
-    public string? GameMode { get; set; }
+    public required string GameMode { get; set; }
     [JsonPropertyName("gameCreation")]
-    public long? GameCreation { get; set; }
+    public required long GameCreation { get; set; }
     [JsonPropertyName("gameDuration")]
-    public int? GameDuration { get; set; }
+    public required int GameDuration { get; set; }
     [JsonPropertyName("queueId")]
-    public int? QueueId {get; set;}
+    public required int QueueId {get; set;}
     [JsonPropertyName("participants")]
-    public List<ParticipantDto>? Participants {get; set;}
+    public required List<ParticipantDto> Participants {get; set;}
 }
