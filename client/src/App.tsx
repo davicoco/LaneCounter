@@ -81,7 +81,7 @@ function App() {
 
   return (
     <>
-      <h1>LOL-Companion</h1>
+      <h1>LaneCounter</h1>
       <input
         value={searchField}
         onChange={(e) => setSearchField(e.target.value)}
