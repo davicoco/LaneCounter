@@ -15,10 +15,10 @@ A full-stack web app for looking up League of Legends players — view match his
 - **External API:** Riot Games API
 
 ## Running locally
-\`\`\`bash
-# backend
+```bash
+# Backend
 cd server && dotnet run
 
-# frontend
+# Frontend
 cd client && npm install && npm run dev
-\`\`\`
+```
