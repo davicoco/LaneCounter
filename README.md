@@ -1,7 +1,24 @@
-# LOL-Companion
-This is a simple side project to help me track my league of legends Ranked games and sharpen my .NET and React skills
-## Tech-stack
+# LaneCounter
 
--**Frontend** React, Typescript, Vite
+A full-stack web app for looking up League of Legends players — view match history and ranked statistics. Built to sharpen my .NET and React skills.
 
--**Backend** ASP.NET Core, C#
+![LaneCounter screenshot](./screenshot.png)
+
+## Features
+- Player lookup by summoner name
+- Match history with game details
+- Ranked stats and tier display
+
+## Tech stack
+- **Frontend:** React, TypeScript, Vite
+- **Backend:** ASP.NET Core Web API, C#
+- **External API:** Riot Games API
+
+## Running locally
+\`\`\`bash
+# backend
+cd server && dotnet run
+
+# frontend
+cd client && npm install && npm run dev
+\`\`\`
