@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+const apiUrl = import.meta.env.VITE_API_URL
 
 interface Account {
   puuid: string;
@@ -43,13 +44,13 @@ function App() {
   const [myPuuid, setMyPuuid] = useState("");
 
   const fetchPuuid = async (gameName: string, tagLine: string) => {
-    const response = await fetch(`http://localhost:5134/api/account/${gameName}/${tagLine}`);
+    const response = await fetch(`${apiUrl}/api/account/${gameName}/${tagLine}`);
     const account: Account = await response.json();
     return account.puuid;
   }
 
   const fetchRanked = async (gameName: string, tagLine: string) => {
-    const response = await fetch(`http://localhost:5134/api/leagueentries/${gameName}/${tagLine}`);
+    const response = await fetch(`${apiUrl}/api/leagueentries/${gameName}/${tagLine}`);
     if (!response.ok) {
       setUiErrorMessage("Failed to get data");
       setRankedData([]);
@@ -64,7 +65,7 @@ function App() {
   const fetchMatches = async (gameName: string, tagLine: string) => {
     const puuid = await fetchPuuid(gameName, tagLine);
     setMyPuuid(puuid)
-    const response = await fetch(`http://localhost:5134/api/match/${gameName}/${tagLine}`)
+    const response = await fetch(`${apiUrl}/api/match/${gameName}/${tagLine}`)
     if (!response.ok) {
       setUiErrorMessage("Failed to get matches")
       setMatches([]);
@@ -73,7 +74,7 @@ function App() {
     const matchIds: string[] = await response.json();
     const firstTenMatches = matchIds.slice(0, 10);
     const promises = firstTenMatches.map((matchId) =>
-      fetch(`http://localhost:5134/api/match/${matchId}`))
+      fetch(`${apiUrl}/api/match/${matchId}`))
     const responses = await Promise.all(promises)
     const matchData = await Promise.all(responses.map((r) => r.json()));
     setMatches(matchData);
