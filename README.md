@@ -2,6 +2,11 @@
 
 A full-stack web app for looking up League of Legends players — view match history and ranked statistics. Built to sharpen my .NET and React skills.
 
+## Live demo
+**[lanecounter.netlify.app](https://lanecounter.netlify.app)**
+
+> Note: the backend is hosted on Render's free tier, which spins down after inactivity. The first request after a while may take up to a minute to wake the server.
+
 ![LaneCounter screenshot](./screenshot.png)
 
 ## Features
