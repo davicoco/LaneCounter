@@ -10,7 +10,7 @@ A full-stack web app for looking up League of Legends players — view match his
 ![LaneCounter screenshot](./screenshot.png)
 
 ## Features
-- Player lookup by summoner name
+- Player lookup by Riot ID
 - Match history with game details
 - Ranked stats and tier display
 
