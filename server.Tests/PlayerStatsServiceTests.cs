@@ -9,6 +9,20 @@ public class PlayerStatsServiceTests
     private readonly PlayerStatsService service = new PlayerStatsService();
 
     [Fact]
+    public void CalculatePlayerStats_ZeroMatchesPlayed_ReturnDtoWithNulledFields()
+    {
+        var matches = new List<MatchDto> ();
+
+        var result = service.CalculatePlayerStats(matches, puuid);
+        
+        Assert.Null(result.RecentWinRate);
+        Assert.Null(result.AverageKills);
+        Assert.Null(result.AverageDeaths);
+        Assert.Null(result.AverageAssists);
+
+    }
+
+    [Fact]
     public void CalculatePlayerStats_FiveWinsOutOfTen_WinRateIsZeroPointFive()
     {
 
