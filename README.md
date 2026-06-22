@@ -10,7 +10,7 @@ A full-stack web app for looking up League of Legends players — view match his
 ![LaneCounter screenshot](./screenshot.png)
 
 ## Features
-- Player lookup by Riot ID
+- Player lookup by Riot ID (EUW server — region is currently hardcoded)
 - Match history with game details
 - Ranked stats and tier display
 
