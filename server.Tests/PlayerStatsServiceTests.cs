@@ -5,13 +5,12 @@ namespace server.Tests;
 
 public class PlayerStatsServiceTests
 {
+    private readonly string puuid = "test-puuid";
+    private readonly PlayerStatsService service = new PlayerStatsService();
 
     [Fact]
     public void CalculatePlayerStats_FiveWinsOutOfTen_WinRateIsZeroPointFive()
     {
-         var service = new PlayerStatsService();
-
-         var puuid = "test-puuid";
 
         var matches = new List<MatchDto>
         {
@@ -30,7 +29,23 @@ public class PlayerStatsServiceTests
 
         var result = service.CalculatePlayerStats(matches, puuid);
 
-        Assert.Equal(0.5,result.RecentWinRate);
+        Assert.Equal(0.5, result.RecentWinRate);
+    }
+
+    [Fact]
+    public void CalculatePlayerStats_TwoMatchesWithDifferentKDA_ReturnsAverageKDA()
+    {
+        var matches = new List<MatchDto>
+        {
+            CreateMatch(puuid , true, 9, 7, 5),
+            CreateMatch(puuid, true, 4, 4, 4)
+        };
+
+        var result = service.CalculatePlayerStats(matches, puuid);
+
+        Assert.Equal(6.5, result.AverageKills.Value, 2);
+        Assert.Equal(5.5, result.AverageDeaths.Value, 2);
+        Assert.Equal(4.5, result.AverageAssists.Value, 2);
     }
 
     private MatchDto CreateMatch(string puuid, bool win, int kills, int deaths, int assists)
@@ -52,7 +67,7 @@ public class PlayerStatsServiceTests
                         Kills = kills,
                         Deaths = deaths,
                         Assists = assists,
-                        Win = win   
+                        Win = win
                     }
                 }
             }
