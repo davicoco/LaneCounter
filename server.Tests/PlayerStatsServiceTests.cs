@@ -43,9 +43,9 @@ public class PlayerStatsServiceTests
 
         var result = service.CalculatePlayerStats(matches, puuid);
 
-        Assert.Equal(6.5, result.AverageKills.Value, 2);
-        Assert.Equal(5.5, result.AverageDeaths.Value, 2);
-        Assert.Equal(4.5, result.AverageAssists.Value, 2);
+        Assert.Equal(6.5, result.AverageKills!.Value, 2);
+        Assert.Equal(5.5, result.AverageDeaths!.Value, 2);
+        Assert.Equal(4.5, result.AverageAssists!.Value, 2);
     }
 
     private MatchDto CreateMatch(string puuid, bool win, int kills, int deaths, int assists)
