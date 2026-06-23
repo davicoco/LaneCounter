@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Services;
+using server.Models;
 
 namespace server.Controllers;
 
@@ -8,10 +9,12 @@ namespace server.Controllers;
 public class MatchController : ControllerBase
 {
     private readonly RiotApiClient _riotApiClient;
+    private readonly PlayerStatsService _playerStatsService;
 
-    public MatchController(RiotApiClient riotApiClient)
+    public MatchController(RiotApiClient riotApiClient, PlayerStatsService playerStatsService)
     {
         _riotApiClient = riotApiClient;
+        _playerStatsService = playerStatsService;
     }
 
     [HttpGet("{gameName}/{tagLine}")]
@@ -23,7 +26,29 @@ public class MatchController : ControllerBase
             return NotFound();
         }
         var matchIds = await _riotApiClient.GetMatchIdsAsync(puuid);
-        return Ok(matchIds);
+
+        var matches = new List<MatchDto>();
+
+        foreach(var matchId in matchIds)
+        {   
+            var match = await _riotApiClient.GetMatchInfoAsync(matchId);
+            if(match == null)
+            {
+                continue;
+            }
+            matches.Add(match);
+        }
+
+        var stats = _playerStatsService.CalculatePlayerStats(matches,puuid);
+
+        var response = new MatchHistoryResponseDto
+        {
+            Matches = matches,
+            PlayerStats = stats
+        };
+
+        return Ok(response);
+        
     }
 
     [HttpGet("{matchId}")]
