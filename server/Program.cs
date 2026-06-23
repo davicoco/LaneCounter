@@ -10,6 +10,7 @@ builder.Services.AddHttpClient<RiotApiClient>(client =>
 {
     client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
 });
+builder.Services.AddSingleton<PlayerStatsService>();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
