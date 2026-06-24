@@ -54,6 +54,7 @@ function App() {
   const [matches, setMatches] = useState<Match[]>([]);
   const [uiErrorMessage, setUiErrorMessage] = useState("");
   const [myPuuid, setMyPuuid] = useState("");
+  const [playerStats, setPlayerStats] = useState<PlayerStats | null>(null);
 
   const fetchPuuid = async (gameName: string, tagLine: string) => {
     const response = await fetch(`${apiUrl}/api/account/${gameName}/${tagLine}`);
@@ -81,15 +82,12 @@ function App() {
     if (!response.ok) {
       setUiErrorMessage("Failed to get matches")
       setMatches([]);
+      setPlayerStats(null);
       return;
     }
-    const matchIds: string[] = await response.json();
-    const firstTenMatches = matchIds.slice(0, 10);
-    const promises = firstTenMatches.map((matchId) =>
-      fetch(`${apiUrl}/api/match/${matchId}`))
-    const responses = await Promise.all(promises)
-    const matchData = await Promise.all(responses.map((r) => r.json()));
-    setMatches(matchData);
+    const matchHistory: MatchHistoryResponse = await response.json();
+    setPlayerStats(matchHistory.playerStats);
+    setMatches(matchHistory.matches);
   }
 
   return (
