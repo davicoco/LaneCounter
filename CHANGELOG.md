@@ -11,7 +11,7 @@ lives in the commit log.
 ## [Unreleased]
  
 ### Added
-- Aggregate player statistics (overall win rate and average KDA) now shown in the UI.
+- Aggregate player statistics (recent win rate and average KDA) now shown in the UI.
  
 ### Changed
  
