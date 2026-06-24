@@ -36,6 +36,18 @@ interface Match {
   info: Info;
 }
 
+interface PlayerStats {
+  recentWinRate: number | null;
+  averageKills: number | null;
+  averageDeaths: number | null;
+  averageAssists: number | null;
+}
+
+interface MatchHistoryResponse{
+  matches: Match[];
+  playerStats: PlayerStats;
+}
+
 function App() {
   const [searchField, setSearchField] = useState("");
   const [rankedData, setRankedData] = useState<LeagueEntry[]>([]);
