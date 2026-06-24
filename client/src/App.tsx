@@ -43,7 +43,7 @@ interface PlayerStats {
   averageAssists: number | null;
 }
 
-interface MatchHistoryResponse{
+interface MatchHistoryResponse {
   matches: Match[];
   playerStats: PlayerStats;
 }
@@ -113,6 +113,19 @@ function App() {
           <p>LeaguePoints: {rankedData[0].leaguePoints}</p>
           <p>Wins: {rankedData[0].wins}</p>
           <p>Losses: {rankedData[0].losses}</p>
+        </div>
+      )}
+
+      {playerStats && (
+        <div>
+          <p>(Last 20 games)</p>
+          <p>Win rate: {playerStats.recentWinRate !== null
+            ? (playerStats.recentWinRate * 100).toFixed(0) + "%"
+            : "N/A"}
+          </p>
+          <p>Average Kills: {playerStats.averageKills}</p>
+          <p>Average Deaths: {playerStats.averageDeaths}</p>
+          <p>Average Assists: {playerStats.averageAssists}</p>
         </div>
       )}
 
