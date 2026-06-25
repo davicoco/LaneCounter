@@ -101,7 +101,7 @@ public class RiotApiClient
             }
             matches.Add(match);
         }
-        Console.WriteLine($"matchIds: {matchIds.Count}, matches: {matches.Count}");
+        
         return matches;
     }
 
