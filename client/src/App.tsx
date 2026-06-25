@@ -123,9 +123,9 @@ function App() {
             ? (playerStats.recentWinRate * 100).toFixed(0) + "%"
             : "N/A"}
           </p>
-          <p>Average Kills: {playerStats.averageKills}</p>
-          <p>Average Deaths: {playerStats.averageDeaths}</p>
-          <p>Average Assists: {playerStats.averageAssists}</p>
+          <p>Average Kills: {playerStats.averageKills ?? "N/A"}</p>
+          <p>Average Deaths: {playerStats.averageDeaths ?? "N/A"}</p>
+          <p>Average Assists: {playerStats.averageAssists ?? "N/A"}</p>
         </div>
       )}
 
