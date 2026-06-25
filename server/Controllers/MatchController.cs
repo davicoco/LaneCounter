@@ -27,17 +27,7 @@ public class MatchController : ControllerBase
         }
         var matchIds = await _riotApiClient.GetMatchIdsAsync(puuid);
 
-        var matches = new List<MatchDto>();
-
-        foreach(var matchId in matchIds)
-        {   
-            var match = await _riotApiClient.GetMatchInfoAsync(matchId);
-            if(match == null)
-            {
-                continue;
-            }
-            matches.Add(match);
-        }
+        var matches = await _riotApiClient.GetMatchesInfoAsync(matchIds);
 
         var stats = _playerStatsService.CalculatePlayerStats(matches,puuid);
 
@@ -47,7 +37,7 @@ public class MatchController : ControllerBase
             PlayerStats = stats
         };
 
-        return Ok(response);
+        return Ok(response);    
         
     }
 

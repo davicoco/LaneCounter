@@ -45,7 +45,7 @@ public class RiotApiClient
         var response = await _httpClient.GetAsync(url);
         var responseBody = await response.Content.ReadAsStringAsync();
         var playerMatches = JsonSerializer.Deserialize<List<string>>(responseBody);
-        if(playerMatches is null)
+        if (playerMatches is null)
         {
             return [];
         }
@@ -56,8 +56,54 @@ public class RiotApiClient
     {
         var url = $"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}";
         var response = await _httpClient.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
         var responseBody = await response.Content.ReadAsStringAsync();
         var match = JsonSerializer.Deserialize<MatchDto>(responseBody);
         return match;
     }
+
+    public async Task<List<MatchDto>> GetMatchesInfoAsync(List<string> matchIds)
+    {
+        var semaphore = new SemaphoreSlim(2);
+
+        async Task<MatchDto?> FetchWithLimit(string matchId)
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                return await GetMatchInfoAsync(matchId);
+            }
+            finally
+            {
+                semaphore.Release();
+            }
+        }
+
+        var pendingMatches = new List<Task<MatchDto?>>();
+
+        foreach( var matchId in matchIds)
+        {
+            Task<MatchDto?> pendingMatch = FetchWithLimit(matchId);
+            pendingMatches.Add(pendingMatch);
+        }
+        MatchDto?[] results = await Task.WhenAll(pendingMatches);
+
+        var matches = new List<MatchDto>();
+
+        foreach(var match in results)
+        {
+            if (match == null)
+            {
+                continue;
+            }
+            matches.Add(match);
+        }
+        Console.WriteLine($"matchIds: {matchIds.Count}, matches: {matches.Count}");
+        return matches;
+    }
+
+
 }
