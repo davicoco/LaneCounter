@@ -1,6 +1,5 @@
-using System.Runtime.CompilerServices;
+using System.Net;
 using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
 using server.Models;
 namespace server.Services;
 
@@ -54,20 +53,40 @@ public class RiotApiClient
 
     public async Task<MatchDto?> GetMatchInfoAsync(string matchId)
     {
-        var url = $"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}";
-        var response = await _httpClient.GetAsync(url);
-        if (!response.IsSuccessStatusCode)
+        int attempt = 0;
+        while (attempt < 3)
         {
-            return null;
+            try
+            {
+                var url = $"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}";
+                var response = await _httpClient.GetAsync(url);
+                if (response.StatusCode == HttpStatusCode.TooManyRequests)
+                {
+                    await Task.Delay(1000);
+                    attempt++;
+                    continue;
+                }
+                if (!response.IsSuccessStatusCode)
+                {
+                    return null;
+                }
+                var responseBody = await response.Content.ReadAsStringAsync();
+                var match = JsonSerializer.Deserialize<MatchDto>(responseBody);
+                return match;
+            }
+            catch (HttpRequestException)
+            {
+                await Task.Delay(1000);
+                attempt++;
+                continue;
+            }
         }
-        var responseBody = await response.Content.ReadAsStringAsync();
-        var match = JsonSerializer.Deserialize<MatchDto>(responseBody);
-        return match;
+        return null;
     }
 
     public async Task<List<MatchDto>> GetMatchesInfoAsync(List<string> matchIds)
     {
-        var semaphore = new SemaphoreSlim(2);
+        var semaphore = new SemaphoreSlim(5);
 
         async Task<MatchDto?> FetchWithLimit(string matchId)
         {
@@ -84,7 +103,7 @@ public class RiotApiClient
 
         var pendingMatches = new List<Task<MatchDto?>>();
 
-        foreach( var matchId in matchIds)
+        foreach (var matchId in matchIds)
         {
             Task<MatchDto?> pendingMatch = FetchWithLimit(matchId);
             pendingMatches.Add(pendingMatch);
@@ -93,7 +112,7 @@ public class RiotApiClient
 
         var matches = new List<MatchDto>();
 
-        foreach(var match in results)
+        foreach (var match in results)
         {
             if (match == null)
             {
@@ -101,7 +120,7 @@ public class RiotApiClient
             }
             matches.Add(match);
         }
-        
+
         return matches;
     }
 
