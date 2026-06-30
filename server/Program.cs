@@ -1,3 +1,6 @@
+using Polly;
+using Polly.Extensions.Http;
+using System.Net;
 using server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,11 +8,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
 var apiKey = builder.Configuration["RIOT_API_KEY"];
+
+var retryPolicy = HttpPolicyExtensions
+    .HandleTransientHttpError()
+    .OrResult(response => response.StatusCode == HttpStatusCode.TooManyRequests)
+    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(1));
+    
 builder.Services.AddHttpClient<RiotApiClient>(client =>
 {
     client.DefaultRequestHeaders.Add("X-Riot-Token", apiKey);
-});
+})
+.AddPolicyHandler(retryPolicy);
+
 builder.Services.AddSingleton<PlayerStatsService>();
 builder.Services.AddControllers();
 builder.Services.AddCors(options =>

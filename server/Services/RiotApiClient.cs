@@ -17,6 +17,10 @@ public class RiotApiClient
     {
         var url = $"https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameName}/{tagLine}";
         var response = await _httpClient.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
         string responseBody = await response.Content.ReadAsStringAsync();
         var account = JsonSerializer.Deserialize<AccountDto>(responseBody);
         if (account?.Puuid is null)
@@ -28,6 +32,10 @@ public class RiotApiClient
     {
         var url = $"https://euw1.api.riotgames.com/lol/league/v4/entries/by-puuid/{encryptedPUUID}";
         var response = await _httpClient.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+        {
+            return  [];
+        }
         var responseBody = await response.Content.ReadAsStringAsync();
         var playerEntries = JsonSerializer.Deserialize<List<LeagueEntryDto>>(responseBody);
         if (playerEntries is null)
@@ -42,6 +50,10 @@ public class RiotApiClient
     {
         var url = $"https://europe.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids";
         var response = await _httpClient.GetAsync(url);
+        if (!response.IsSuccessStatusCode)
+        {
+            return [];
+        }
         var responseBody = await response.Content.ReadAsStringAsync();
         var playerMatches = JsonSerializer.Deserialize<List<string>>(responseBody);
         if (playerMatches is null)
@@ -52,20 +64,9 @@ public class RiotApiClient
     }
 
     public async Task<MatchDto?> GetMatchInfoAsync(string matchId)
-    {
-        int attempt = 0;
-        while (attempt < 3)
-        {
-            try
-            {
+    {      
                 var url = $"https://europe.api.riotgames.com/lol/match/v5/matches/{matchId}";
                 var response = await _httpClient.GetAsync(url);
-                if (response.StatusCode == HttpStatusCode.TooManyRequests)
-                {
-                    await Task.Delay(1000);
-                    attempt++;
-                    continue;
-                }
                 if (!response.IsSuccessStatusCode)
                 {
                     return null;
@@ -73,15 +74,6 @@ public class RiotApiClient
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var match = JsonSerializer.Deserialize<MatchDto>(responseBody);
                 return match;
-            }
-            catch (HttpRequestException)
-            {
-                await Task.Delay(1000);
-                attempt++;
-                continue;
-            }
-        }
-        return null;
     }
 
     public async Task<List<MatchDto>> GetMatchesInfoAsync(List<string> matchIds)
@@ -108,6 +100,7 @@ public class RiotApiClient
             Task<MatchDto?> pendingMatch = FetchWithLimit(matchId);
             pendingMatches.Add(pendingMatch);
         }
+
         MatchDto?[] results = await Task.WhenAll(pendingMatches);
 
         var matches = new List<MatchDto>();
