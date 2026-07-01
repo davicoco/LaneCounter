@@ -30,6 +30,7 @@ public class LeagueEntryDto
 
     [JsonPropertyName("freshBlood")]
     public bool? FreshBlood { get; set; }
+    
     [JsonPropertyName("inactive")]
     public bool? Inactive { get; set; }
 
