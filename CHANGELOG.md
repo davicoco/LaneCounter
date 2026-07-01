@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  
 This changelog starts from the current point in development; earlier history
 lives in the commit log.
- 
+
 ## [Unreleased]
+
+### Added
+
+### Changed
+
+### Fixed
+ 
+## [1.1.0] - 2026-07-01
  
 ### Added
 - Aggregate player statistics (recent win rate and average KDA) now shown in the UI.
