@@ -46,7 +46,9 @@ public class PlayerStatsService
             AverageKills = totalKills / playedMatches,
             AverageDeaths = totalDeaths / playedMatches,
             AverageAssists = totalAssists / playedMatches,
-            RecentWinRate = wins / playedMatches
+            RecentWinRate = wins / playedMatches,
+            PlayedMatches =playedMatches,
+            RemakeCount = remakes
         };
 
         return stats;
