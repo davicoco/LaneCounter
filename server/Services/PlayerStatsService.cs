@@ -10,13 +10,20 @@ public class PlayerStatsService
         {
             return new PlayerStatsDto();
         }
+
         double totalKills = 0;
         double totalDeaths = 0;
         double totalAssists = 0;
         double wins = 0;
+        int remakes = 0;
         foreach (var match in matches)
-        {
+        {   
             var player = match.Info.Participants.First((p) => p.Puuid == puuid);
+            if (player.GameEndedInEarlySurrender)
+            {
+                remakes++;
+                continue;
+            }
             totalKills += player.Kills;
             totalDeaths += player.Deaths;
             totalAssists += player.Assists;
@@ -26,12 +33,20 @@ public class PlayerStatsService
             }
 
         }
+
+        int playedMatches = matches.Count - remakes;
+
+        if (playedMatches == 0)
+        {
+            return new PlayerStatsDto();
+        }
+
         var stats = new PlayerStatsDto
         {
-            AverageKills = totalKills / matches.Count,
-            AverageDeaths = totalDeaths / matches.Count,
-            AverageAssists = totalAssists / matches.Count,
-            RecentWinRate = wins / matches.Count
+            AverageKills = totalKills / playedMatches,
+            AverageDeaths = totalDeaths / playedMatches,
+            AverageAssists = totalAssists / playedMatches,
+            RecentWinRate = wins / playedMatches
         };
 
         return stats;
