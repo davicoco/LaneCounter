@@ -41,6 +41,8 @@ interface PlayerStats {
   averageKills: number | null;
   averageDeaths: number | null;
   averageAssists: number | null;
+  playedMatches: number;
+  remakeCount: number;
 }
 
 interface MatchHistoryResponse {
@@ -118,14 +120,20 @@ function App() {
 
       {playerStats && (
         <div>
-          <p>(Last 20 games)</p>
+          <p>Stats calculated from played matches ({playerStats.playedMatches}): Total games ({matches.length}) - remakes ({playerStats.remakeCount})</p>
           <p>Win rate: {playerStats.recentWinRate !== null
             ? (playerStats.recentWinRate * 100).toFixed(0) + "%"
             : "N/A"}
           </p>
-          <p>Average Kills: {playerStats.averageKills ?? "N/A"}</p>
-          <p>Average Deaths: {playerStats.averageDeaths ?? "N/A"}</p>
-          <p>Average Assists: {playerStats.averageAssists ?? "N/A"}</p>
+          <p>Average Kills: {playerStats.averageKills !== null
+            ? playerStats.averageKills.toFixed(1)
+            : "N/A"}</p>
+          <p>Average Deaths: {playerStats.averageDeaths !== null
+            ? playerStats.averageDeaths.toFixed(1)
+            : "N/A"}</p>
+          <p>Average Assists: {playerStats.averageAssists !== null
+            ? playerStats.averageAssists.toFixed(1)
+            : "N/A"}</p>
         </div>
       )}
 
