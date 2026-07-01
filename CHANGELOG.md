@@ -16,6 +16,7 @@ lives in the commit log.
 ### Changed
  
 ### Fixed
+- Faster and more reliable match loading — matches now fetch in parallel with automatic retry on rate limits.
  
 ## [1.0.0] - 2026-06-22
  
